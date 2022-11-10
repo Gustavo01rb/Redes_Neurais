@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 class Activation_function:
 
@@ -18,8 +19,13 @@ class Activation_function:
   def linear_function_no_saturation(*args) -> float:
     return args[1] * args[0]
   @staticmethod
-  def sigmoidal_functions_unipolar(*args) -> float:
-    return 1 /( 1 + math.exp( (-args[1])*args[0] ) )
+  def sigmoidal_function(*args) -> float:
+    return 1/(1 + np.exp(-args[0]))
+  def dsigmoidal_function(*args) -> float:
+    return np.exp(-args[0])/(1 + np.exp(-args[0]))**2
   @staticmethod
-  def sigmoidal_functions_bipolar(*args) -> float:
-    return (2 /( 1 + math.exp( (-args[1])*args[0] ) )) - 1 
+  def TANH(*args):
+    return np.tanh(args[0])
+  @staticmethod
+  def dTANH(*args):
+    return 1 - np.tanh(args[0])**2

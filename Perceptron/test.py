@@ -82,6 +82,34 @@ def and_gate_test():
         title="and_gate")
     model.show_info("and_gate")
 
+def xor_gate_test():
+    xor_truth_table = [
+        [0,0,0],
+        [0,1,1],
+        [1,0,1],
+        [1,1,0]
+    ]   
+    xor_truth_table = pd.DataFrame(xor_truth_table, columns=['X1','X2','Y'])
+    x = np.array([xor_truth_table['X1'], xor_truth_table['X2']]).T
+    y = xor_truth_table['Y'] 
+
+    model =  Perceptron()
+    model.fit(x,y)
+
+    Graphs.plot_2d_graph(
+        x,
+        y,
+        show=False, 
+        x_axis=False, 
+        y_axis=False, 
+        model_weights=model.weights, 
+        history_weights=model.history['weights'],
+        history_errors=model.history['errors'],
+        save_path="Results/xor_gate/",
+        title="xor_gate")
+    model.show_info("xor_gate")
+
 sklearn_test()
 or_gate_test()
 and_gate_test()
+xor_gate_test()
