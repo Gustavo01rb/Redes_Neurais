@@ -205,7 +205,7 @@ X, Y = np.meshgrid(X, Y)
 def F(x,y):
     return mlp.predict(np.array([[x,y]]))
 Z = np.vectorize(F)(X,Y)
-plt.pcolor(X,Y,Z, cmap='RdBu')
+plt.pcolor(X,Y,Z, cmap='jet')
 plt.colorbar()
 cntr = plt.contour(X,Y,Z, levels = [0.5])
 plt.clabel(cntr, inline=1, fontsize=10)
