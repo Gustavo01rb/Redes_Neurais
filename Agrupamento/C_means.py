@@ -45,33 +45,106 @@ class C_Means:
                 d = args[point][cord] - args[point + 1][cord]
                 sum += d**2
         return sqrt(sum)
+    
+    def predict(self, point : list(), centers = list()):
+        current_center = centers if len(centers) > 0 else self.centers
+        distance_to_center = [self.__euclidean_distance(point, center) for center in current_center]
+        return distance_to_center.index(min(distance_to_center))
+    
+    def predict_group(self, x : np.array, y : np.array):
+        Y = list()
+        errors = 0
+        for index, point in enumerate(x):
+            out = self.predict(point)
+            Y.append(out)
+            if out != y[index]:
+                errors += 1
+        return Y, errors, (y.shape[0] - errors) / y.shape[0]
 
-    def init_random_center(self, n_centers, x1_min, x1_max, x2_min, x2_max, tol = 2) -> None:
+    def __init_random_center(self, n_centers, x , tol = 2) -> None:
         if len(self.centers) != 0: return 
+        x1_min = x[:,0].min()
+        x1_max = x[:,0].max()
+        x2_min = x[:,1].min()
+        x2_max = x[:,1].max()
         for _ in range(n_centers):
             x_cord = np.random.uniform(x1_min - tol, x1_max + tol)
             y_cord = np.random.uniform(x2_min - tol, x2_max + tol)
             self.centers.append(np.array([x_cord, y_cord]))
         self.centers = np.array(self.centers)
+    
+    def __init_supervised_centers(self, x,y) -> None:
+        for center in np.unique(y):
+            group = y == center
+            self.centers.append(np.array([
+                x[group, 0].mean(),
+                x[group, 1].mean(),
+            ]))
+        self.centers = np.array(self.centers)
+    
+    def __accuracy(self, x, y, centers):
+        errors = 0
+        for index, expected_y in enumerate(y):
+            output = self.predict(x[index, :], centers)
+            if output != expected_y :
+                errors += 1
+        return (y.shape[0] - errors) / y.shape[0]
+        
     # Fim -> Métodos auxiliares
 
 
     # Métodos de ajuste e treinamento
-    def fit(self, x, y = None):
+    def fit(self, x : np.array, y:np.array = list, n_centers : int= None) -> None:
         if self.supervised:
-            print("Ainda não implementado")
+            if len(y) == 0: 
+                print("[ERRO] -> Conjunto de saída não informado")
+                exit()
+            self.__init_supervised_centers(x,y)
+            self.__fit_supervised(x,y)
             return
-        self.fit_usupervised(x)
+        if n_centers == None:
+            print("[ERRO] -> Número de centros não infromado.")
+            exit()
+        self.__init_random_center(n_centers=n_centers, x=x)
+        self.__fit_usupervised(x)
     
-    def fit_usupervised(self, x):
+    def __fit_supervised(self,x,y):
         self.historic['centers'].append(self.centers.copy())
         for current_epoch in range(self.epoch):
             self.membership_matrix = list()
-            for point in x:
-                distance_to_center = [self.__euclidean_distance(point, center) for center in self.centers]
-                self.membership_matrix.append(distance_to_center.index(min(distance_to_center)))
-            self.membership_matrix = np.array(self.membership_matrix)
+            
+            self.membership_matrix = np.array([self.predict(point) for point in x])
             self.historic['membership_matrix'].append(self.membership_matrix.copy())
+            
+            bcentroid = list()
+            for center, _ in enumerate(self.centers):
+                points = self.membership_matrix == center
+                if not True in points: continue
+                bcentroid.append(np.array([
+                    x[points,0].mean(), 
+                    x[points,1].mean()
+                ])) 
+            bcentroid = np.array(bcentroid)
+            
+            accuracy_centroid  = self.__accuracy(x,y,self.centers)
+            accuracy_bcentroid = self.__accuracy(x,y,bcentroid)
+            if accuracy_bcentroid > accuracy_centroid:
+                self.centers = bcentroid
+                self.historic['centers'].append(self.centers.copy())
+            else:
+                self.epoch = current_epoch+1
+                return
+
+
+    
+    def __fit_usupervised(self, x):
+        self.historic['centers'].append(self.centers.copy())
+        for current_epoch in range(self.epoch):
+            self.membership_matrix = list()
+            
+            self.membership_matrix = np.array([self.predict(point) for point in x])
+            self.historic['membership_matrix'].append(self.membership_matrix.copy())
+            
             for center, _ in enumerate(self.centers):
                 points = self.membership_matrix == center
                 if not True in points: continue
@@ -82,41 +155,57 @@ class C_Means:
             self.historic['centers'].append(self.centers.copy())
             if distance_error.max() < self.tol:
                 self.epoch = current_epoch + 1
+                self.historic['centers'] = np.array(self.historic['centers'])
+                self.centers = np.array(self.centers)
                 return
     # Fim -> Métodos de ajuste e treinamento
     
     # Métodos de exibição
-    def info(self, x, y = None, show = False):
+    def info(self, path : str , x : np.array, show : bool = False) -> None:
         print("\n\n Informações do modelo: ")
         print("\t Número de épocas até a convergência: ", self.epoch)
-        print("\tPosição dos centros: ")
+        print("\tPosição final dos centros: ")
         for i, center in enumerate(self.centers):
             print(f"\t\tCentro {i+1} : {center}")
-        self.show(x,y,show)
+        self.show(path, x,show)
 
-    def show(self, x, y, show):
+    def show(self, path : str ,x : np.array, show : bool ) -> None:
         plt.clf()        
-        if not self.supervised: y = self.membership_matrix
+        y = self.membership_matrix
         plt.title("Amostras", fontsize=20, fontweight ="bold")
         plt.scatter(x[:,0], x[:,1], marker='o',edgecolor='k')
         plt.grid(True)
-        plt.savefig("results/1_sample.png")
+        plt.savefig(path + "1_sample.png")
         if show : plt.show()
 
         for epoch in range(len(self.historic['centers']) -1):
             plt.clf()        
-            plt.scatter(x[:,0], x[:,1], marker='o', c=y if self.supervised else self.historic['membership_matrix'][epoch],edgecolor='k')
-            plt.scatter(self.historic['centers'][epoch][:,0], self.historic['centers'][epoch][:,1], marker='^',c = 'r',s=100, edgecolor='k')
+            fig, ax = plt.subplots()
+            groups  =  ax.scatter(x[:,0], x[:,1], marker='o', c=self.historic['membership_matrix'][epoch],edgecolor='k')
+            ax.scatter(self.historic['centers'][epoch][:,0], self.historic['centers'][epoch][:,1], marker='^',c = 'r', label = "Centros",s=100,edgecolor='k')
             plt.title(f"Época: {epoch}", fontsize=20, fontweight ="bold")
-            plt.grid(True)
-            plt.savefig("results/epoch"+ str(epoch) +".png")
+            ax.grid(True)
+            legend2 = ax.legend(loc="upper right")
+            ax.add_artist(legend2)
+            legend1 = ax.legend(*groups.legend_elements(),
+                    loc="lower left", title="Grupos")
+            ax.add_artist(legend1)
+            
+
+            plt.savefig(path +"epoch"+ str(epoch) +".png")
             if show : plt.show()    
 
 
-        plt.clf()        
-        plt.scatter(x[:,0], x[:,1], marker='o', c=y,edgecolor='k')
-        plt.scatter(self.centers[:,0], self.centers[:,1], marker='^',c = 'r',s=100, edgecolor='k')
-        plt.title("Resultado", fontsize=20, fontweight ="bold")
-        plt.grid(True)
-        plt.savefig("results/2_result.png")
+        plt.clf()    
+        fig, ax = plt.subplots()
+        groups =  ax.scatter(x[:,0], x[:,1], marker='o', c=y,edgecolor='k')
+        ax.scatter(self.centers[:,0], self.centers[:,1],label= "Centros",marker='^',c = 'r',s=100, edgecolor='k')
+        plt.title("Resultado não supervisionado" if not self.supervised else "Resultado supervisionado", fontsize=20, fontweight ="bold")
+        ax.grid(True)
+        legend2 = ax.legend(loc="upper right")
+        ax.add_artist(legend2)
+        legend1 = ax.legend(*groups.legend_elements(),
+                    loc="lower left", title="Grupos")
+        ax.add_artist(legend1)
+        plt.savefig(path +"2_result.png")
         if show : plt.show()
