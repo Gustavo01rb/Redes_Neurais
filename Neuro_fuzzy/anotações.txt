@@ -1,0 +1,19 @@
+Dimensões do conjunto de entrada de treinamento:  (1297, 3)
+Dimensões do conjunto de saída de treinamento:  (1297, 1)
+Dimensões do conjunto de entrada de validação:  (557, 3)
+Dimensões do conjunto de saída de validação:  (557, 1)
+
+Valor máximo e mínimo de x_train: [(1.0, 0.0019276076)]
+Valor máximo e mínimo de x_teste: [(1.0, 0.0037124295)]
+Valor máximo e mínimo de y_train: [(1.0, 0.0019276076)]
+Valor máximo e mínimo de y_teste: [(0.97337046, 0.00571143)]
+
+
+Valor mínimo da coluna 1 de x_train:  0.0032126794
+Valor máximo da coluna 1 de x_train:  1.0
+
+Valor mínimo da coluna 2 de x_train:  0.0032126794
+Valor máximo da coluna 2 de x_train:  1.0
+
+Valor mínimo da coluna 3 de x_train:  0.0032126794
+Valor máximo da coluna 3 de x_train:  0.97337046
