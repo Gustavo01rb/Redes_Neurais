@@ -17,7 +17,7 @@ class Graphs:
         figure = plt.figure()
         figure.set_figwidth(10)
         plt.subplots_adjust(bottom=0.2)
-        plt.title(title, fontsize=22, fontweight ="bold")
+        plt.title(title, fontsize=18, fontweight ="bold")
         plt.grid(grid)
         if not multi_functions:
             plt.plot(range, data, label = labels)
