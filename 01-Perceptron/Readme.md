@@ -51,6 +51,27 @@ O script `main.py` executa quatro testes diferentes usando o Perceptron:
 
 Os resultados dos testes são salvos na pasta `Results/`.
 
+## Resultados
+
+### Porta And
+<div style="display:flex; justify-content:center; align-items:center;">
+    <div style="margin-right: 20px;">
+        <a href = "Results/and_gate/and_gate_result.png">
+        <img src="Results/and_gate/and_gate_result.png" alt="Resultado" width="300" />
+        </a>
+        <p align="center">Resultado</p>
+    </div>
+    <div style="margin-right: 20px;">
+        <img src="Results/and_gate/and_gate_history.png" alt="Histórico" width="300" />
+        <p align="center">Histórico de tentativas</p>
+    </div>
+    <div>
+        <img src="Results/and_gate/and_gate_errors.png" alt="Erro" width="300" />
+        <p align="center">Taxa de erro durante a execução</p>
+    </div>
+</div>
+
+
 ## Personalização
 
 Você pode personalizar o Perceptron alterando os parâmetros e os dados de entrada nos testes dentro do arquivo `main.py`. Além disso, é possível modificar o comportamento da função de ativação no arquivo `Perceptron.py` para implementar outras funções de ativação, se necessário.
