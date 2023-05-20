@@ -26,7 +26,7 @@ class Graphs:
             Nenhum.
         """
         plt.clf()
-        _, ax = plt.subplots(figsize=(11, 6))
+        _, ax = plt.subplots(figsize=(10, 6))
         
         ax.scatter(input[:, 0], input[:, 1], marker='o', c=output, edgecolor='k')
         

@@ -53,22 +53,56 @@ Os resultados dos testes são salvos na pasta `Results/`.
 
 ## Resultados
 
-### Porta And
-<div style="display:flex; justify-content:center; align-items:center;">
-    <div style="margin-right: 20px;">
-        <a href = "Results/and_gate/and_gate_result.png">
-        <img src="Results/and_gate/and_gate_result.png" alt="Resultado" width="300" />
-        </a>
-        <p align="center">Resultado</p>
-    </div>
-    <div style="margin-right: 20px;">
-        <img src="Results/and_gate/and_gate_history.png" alt="Histórico" width="300" />
-        <p align="center">Histórico de tentativas</p>
-    </div>
-    <div>
-        <img src="Results/and_gate/and_gate_errors.png" alt="Erro" width="300" />
-        <p align="center">Taxa de erro durante a execução</p>
-    </div>
+### Make Classification - scikit-learn
+<div align="center">
+    <a href = "Results/Sklearn_test/Sklearn_datasets_result.png">
+        <img src="Results/Sklearn_test/Sklearn_datasets_result.png" alt="Resultado" width="300">
+    </a>
+    <a href = "Results/Sklearn_test/Sklearn_datasets_history.png">
+        <img src="Results/Sklearn_test/Sklearn_datasets_history.png" alt="Histórico de tentativas" width="300">
+    </a>
+    <a href = "Results/Sklearn_test/Sklearn_datasets_errors.png" >
+        <img src="Results/Sklearn_test/Sklearn_datasets_errors.png" alt="Erros" width="300">
+    </a>
+</div>
+
+### And Gate
+<div align="center">
+    <a href = "Results/and_gate/and_gate_result.png">
+        <img src="Results/and_gate/and_gate_result.png" alt="Resultado" width="300">
+    </a>
+    <a href = "Results/and_gate/and_gate_history.png">
+        <img src="Results/and_gate/and_gate_history.png" alt="Histórico de tentativas" width="300">
+    </a>
+    <a href = "Results/and_gate/and_gate_errors.png" >
+        <img src="Results/and_gate/and_gate_errors.png" alt="Erros" width="300">
+    </a>
+</div>
+
+### Or Gate
+<div align="center">
+    <a href = "Results/or_gate/or_gate_result.png">
+        <img src="Results/or_gate/or_gate_result.png" alt="Resultado" width="300">
+    </a>
+    <a href = "Results/or_gate/or_gate_history.png">
+        <img src="Results/or_gate/or_gate_history.png" alt="Histórico de tentativas" width="300">
+    </a>
+    <a href = "Results/or_gate/or_gate_errors.png" >
+        <img src="Results/or_gate/or_gate_errors.png" alt="Erros" width="300">
+    </a>
+</div>
+
+### XOr Gate
+<div align="center">
+    <a href = "Results/xor_gate/xor_gate_result.png">
+        <img src="Results/xor_gate/xor_gate_result.png" alt="Resultado" width="300">
+    </a>
+    <a href = "Results/xor_gate/xor_gate_history.png">
+        <img src="Results/xor_gate/xor_gate_history.png" alt="Histórico de tentativas" width="300">
+    </a>
+    <a href = "Results/xor_gate/xor_gate_errors.png" >
+        <img src="Results/xor_gate/xor_gate_errors.png" alt="Erros" width="300">
+    </a>
 </div>
 
 
