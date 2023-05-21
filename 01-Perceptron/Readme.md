@@ -4,14 +4,14 @@ Este repositório contém uma implementação simples do Perceptron, um algoritm
 
 O Perceptron é um modelo de neurônio artificial que recebe entradas, calcula uma combinação linear ponderada delas, aplica uma função de ativação e retorna uma saída. Ele pode aprender a classificar corretamente exemplos de treinamento por meio de um processo de ajuste dos pesos e do bias.
 
-## Estrutura do Repositório
+### Estrutura do Repositório
 
 - `Perceptron.py`: Implementação do Perceptron.
 - `utils/`: Pasta contendo utilitários auxiliares.
 - `Results/`: Pasta para armazenar os resultados dos testes.
 - `main.py`: Script principal para executar os testes do Perceptron.
 
-## Dependências
+### Dependências
 
 - Python 3
 - numpy
@@ -19,7 +19,7 @@ O Perceptron é um modelo de neurônio artificial que recebe entradas, calcula u
 - scikit-learn
 - matplotlib
 
-## Como Usar
+### Como Acessar
 
 1. Clone este repositório: git clone https://github.com/Gustavo01rb/Redes_Neurais.git
 2. Navegue até o diretório clonado: cd 01-Perceptron/
@@ -34,10 +34,10 @@ O Perceptron é um modelo de neurônio artificial que recebe entradas, calcula u
 pip install -r requirements.txt 
 ~~~
 >Comando para instalar as dependências
-4. Execute o script `main.py` para executar os testes:
+4. Execute o script `main.py` para executar os testes.
 
 
-## Testes
+### Testes
 
 O script `main.py` executa quatro testes diferentes usando o Perceptron:
 
@@ -51,9 +51,9 @@ O script `main.py` executa quatro testes diferentes usando o Perceptron:
 
 Os resultados dos testes são salvos na pasta `Results/`.
 
-## Resultados
+### Resultados
 
-### Make Classification - scikit-learn
+#### Make Classification - scikit-learn
 <div align="center">
     <a href = "Results/Sklearn_test/Sklearn_datasets_result.png">
         <img src="Results/Sklearn_test/Sklearn_datasets_result.png" alt="Resultado" width="300">
@@ -66,7 +66,7 @@ Os resultados dos testes são salvos na pasta `Results/`.
     </a>
 </div>
 
-### And Gate
+#### And Gate
 <div align="center">
     <a href = "Results/and_gate/and_gate_result.png">
         <img src="Results/and_gate/and_gate_result.png" alt="Resultado" width="300">
@@ -79,7 +79,7 @@ Os resultados dos testes são salvos na pasta `Results/`.
     </a>
 </div>
 
-### Or Gate
+#### Or Gate
 <div align="center">
     <a href = "Results/or_gate/or_gate_result.png">
         <img src="Results/or_gate/or_gate_result.png" alt="Resultado" width="300">
@@ -92,7 +92,7 @@ Os resultados dos testes são salvos na pasta `Results/`.
     </a>
 </div>
 
-### XOr Gate
+#### XOr Gate
 <div align="center">
     <a href = "Results/xor_gate/xor_gate_result.png">
         <img src="Results/xor_gate/xor_gate_result.png" alt="Resultado" width="300">
@@ -106,15 +106,15 @@ Os resultados dos testes são salvos na pasta `Results/`.
 </div>
 
 
-## Personalização
+### Personalização
 
 Você pode personalizar o Perceptron alterando os parâmetros e os dados de entrada nos testes dentro do arquivo `main.py`. Além disso, é possível modificar o comportamento da função de ativação no arquivo `Perceptron.py` para implementar outras funções de ativação, se necessário.
 
-## Contribuindo
+### Contribuindo
 
 Contribuições são bem-vindas! Se você tiver sugestões, melhorias ou correções, sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
-## Licença
+### Licença
 
 Este projeto está licenciado sob a [MIT License](../LICENSE).
 

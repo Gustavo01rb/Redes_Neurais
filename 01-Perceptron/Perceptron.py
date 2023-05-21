@@ -4,7 +4,7 @@ from tabulate import tabulate
 import pandas as pd
 sys.path.append('..')
 from typing import Callable
-from utils.Activation_Function import Activation_function as AF
+from utils.Activation_Function import ActivationFunction as AF
 
 class Perceptron:
     def __init__(
