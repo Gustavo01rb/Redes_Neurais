@@ -2,9 +2,8 @@ from C_means import C_Means
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_blobs
-import sys
-sys.path.append('..')
-from utils.Graphs import Graphs
+from utils import display_samples
+from utils import display_samples_with_centers
 
 # Definição da base de dados
 n_centers = 4
@@ -20,9 +19,9 @@ x, y = make_blobs(n_samples=samples, centers=n_centers, cluster_std=desv_pad, ra
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_percentage, stratify=y)
 
 # Plot das amostras
-Graphs.display_samples(x, y, "Conjunto das amostras", "Results/samples.png")
-Graphs.display_samples(x_train, y_train, "Conjunto de treinamento", "Results/train.png")
-Graphs.display_samples(x_test, y_test, "Conjunto de validação", "Results/test.png")
+display_samples(x, y, "Conjunto das amostras", "Results/samples.png")
+display_samples(x_train, y_train, "Conjunto de treinamento", "Results/train.png")
+display_samples(x_test, y_test, "Conjunto de validação", "Results/test.png")
 
 def runs(model):
     # Treinamento do modelo
@@ -31,7 +30,7 @@ def runs(model):
 
     # Plot dos clusters em cada época
     for epoch in range(len(model.historic['centers']) - 1):
-        Graphs.display_samples_with_centers(
+        display_samples_with_centers(
             input=x_train,
             centers=model.historic['centers'][epoch],
             membership_matrix=model.historic['membership_matrix'][epoch],
@@ -42,7 +41,7 @@ def runs(model):
 
     # Predição do conjunto de teste e plot dos resultados
     Y, erro, accuracy = model.predict_group(x_test, y_test)
-    Graphs.display_samples_with_centers(
+    display_samples_with_centers(
         input=x_test,
         membership_matrix=Y,
         centers=model.centers,

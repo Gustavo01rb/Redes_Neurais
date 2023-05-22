@@ -7,7 +7,7 @@ O Perceptron é um modelo de neurônio artificial que recebe entradas, calcula u
 ### Estrutura do Repositório
 
 - `Perceptron.py`: Implementação do Perceptron.
-- `utils/`: Pasta contendo utilitários auxiliares.
+- `utils.py`: Pasta contendo utilitários auxiliares.
 - `Results/`: Pasta para armazenar os resultados dos testes.
 - `main.py`: Script principal para executar os testes do Perceptron.
 
@@ -28,7 +28,7 @@ O Perceptron é um modelo de neurônio artificial que recebe entradas, calcula u
     * pandas->1.4.4
     * scikit_learn->1.0.2
     * tabulate->0.8.10
-    * Lembre-se de instalar as dependências da pasta Utils também
+    * matplotlib->3.5.2
 
 ~~~
 pip install -r requirements.txt 

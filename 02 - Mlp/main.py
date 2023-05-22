@@ -1,13 +1,11 @@
 from Mlp import MLP
 import numpy as np
-import sys
-sys.path.append('..')
-from utils.Graphs import Graphs
+from utils import display_mlp
 
 def gate_test(X,Y, title):
     mlp = MLP(dims=[2, 5, 1], eta=0.1, activation='sigmoid', max_epochs=4000, alpha=0.55)
     mlp.fit(X, Y)
-    Graphs.display_mlp(mlp, X,Y, title, save_path=f"Results/{title}/", show=False, erro=True)
+    display_mlp(mlp, X,Y, title, save_path=f"Results/{title}/", show=False, erro=True)
     
 
 # Porta lógica AND

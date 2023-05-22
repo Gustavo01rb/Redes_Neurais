@@ -1,10 +1,10 @@
 import sys
 import pandas as pd
 import numpy as np
-sys.path.append('..')
-from utils.Graphs import Graphs
 from Perceptron import Perceptron
 from sklearn.datasets import make_classification
+from utils import plot
+
 
 def sklearn_test():
     x, y = make_classification(n_features=2, n_redundant=0, n_informative=1,
@@ -15,7 +15,7 @@ def sklearn_test():
 
     save_path = "Results/Sklearn_test/"
     title = "Sklearn_datasets"
-    Graphs.plot_2d_graph(
+    plot(
         x,
         y,
         show=False, 
@@ -41,7 +41,7 @@ def gate_test(gate_name, gate_data):
 
     save_path = f"Results/{gate_name}/"
     title = gate_name
-    Graphs.plot_2d_graph(
+    plot(
         x,
         y,
         show=False, 

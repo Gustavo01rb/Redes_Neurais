@@ -2,16 +2,14 @@ import sys
 import numpy as np
 from tabulate import tabulate
 import pandas as pd
-sys.path.append('..')
-from typing import Callable
-from utils.Activation_Function import ActivationFunction as AF
+from utils import ActivationFunction as AF
 
 class Perceptron:
     def __init__(
         self,
         epoch: int = 50,
         learning_rate: float = 0.2,
-        actv_function: Callable = AF.step_function_1,
+        actv_function = AF.step_function_1,
         bias: int = -1,
         tol: float = 0.02
     ) -> None:

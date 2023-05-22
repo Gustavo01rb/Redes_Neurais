@@ -6,11 +6,11 @@ O MLP (Perceptron Multicamadas) é um algoritmo de aprendizado de máquina que c
 
 - `mlp.py`: Este arquivo contém a implementação do MLP para classificação. Ele inclui a definição da classe MLP, que possui métodos para treinar a rede, realizar predições e calcular a pontuação do modelo.
 
-- `../utils/activation_functions.py`: Este arquivo contém as implementações das funções de ativação utilizadas pelo MLP. Ele fornece as funções sigmoidal, linear, relu e tanh, juntamente com suas derivadas.
+- `../utils.py -> ActivationFunction`: Este arquivo contém as implementações das funções de ativação utilizadas pelo MLP. Ele fornece as funções sigmoidal, linear, relu e tanh, juntamente com suas derivadas.
 
 - `main.py`: Este arquivo é usado para testar o MLP com diferentes portas lógicas, como AND, OR e XOR. Ele cria uma instância do MLP, treina o modelo com os dados de entrada e saída fornecidos e exibe os resultados em gráficos.
 
-- `../utils/graphs.py`: Este arquivo contém uma classe utilitária chamada Graphs, que é usada para exibir o MLP treinado e os pontos de dados em gráficos. Ele fornece um método chamado `display_mlp` que plota o resultado do MLP e opcionalmente os erros de treinamento.
+- `../utils.py -> display_mlp`: Este arquivo contém uma função chamada `display_mlp` que plota o resultado do MLP e opcionalmente os erros de treinamento.
 
 ### Dependências
 
@@ -24,8 +24,7 @@ O MLP (Perceptron Multicamadas) é um algoritmo de aprendizado de máquina que c
 2. Navegue até o diretório clonado: cd 02-Mlp/
 3. Instale as dependências:
     * numpy -> 1.21.5
-    * Lembre-se de instalar as dependências da pasta Utils também
-
+    * matplotlib -> 3.5.2
 ~~~
 pip install -r requirements.txt 
 ~~~

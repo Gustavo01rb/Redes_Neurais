@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 sys.path.append('..')
-from utils.Activation_Function import ActivationFunction as AF
+from utils import ActivationFunction as AF
 
 """
     Implementação de um Perceptron Multicamadas (MLP) para classificação.
