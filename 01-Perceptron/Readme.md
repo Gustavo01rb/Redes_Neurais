@@ -13,7 +13,7 @@ O Perceptron é um modelo de neurônio artificial que recebe entradas, calcula u
 
 ### Dependências
 
-- Python 3
+- Python 
 - numpy
 - pandas
 - scikit-learn

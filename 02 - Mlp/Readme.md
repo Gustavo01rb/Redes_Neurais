@@ -14,7 +14,7 @@ O MLP (Perceptron Multicamadas) é um algoritmo de aprendizado de máquina que c
 
 ### Dependências
 
-- Python 3
+- Python 
 - numpy
 - matplotlib
 

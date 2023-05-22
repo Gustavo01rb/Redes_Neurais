@@ -6,9 +6,9 @@ from utils import display_samples
 from utils import display_samples_with_centers
 
 # Definição da base de dados
-n_centers = 4
+n_centers = 6
 test_percentage = 0.3
-samples = 500
+samples = 900
 desv_pad = 1
 random_seed = 3212
 
@@ -45,7 +45,7 @@ def runs(model):
         input=x_test,
         membership_matrix=Y,
         centers=model.centers,
-        title="Resultado conjunto de testes",
+        title="Validação " + ("supervisionada" if model.supervised else "não supervisionada"),
         show=False,
         save_path="Results/" + ("supervised" if model.supervised else "unsupervised") + "/test"
     )
