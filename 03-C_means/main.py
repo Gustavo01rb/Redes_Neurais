@@ -1,53 +1,69 @@
 from C_means import C_Means
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_blobs
+import sys
+sys.path.append('..')
+from utils.Graphs import Graphs
 
 # Definição da base de dados
 n_centers = 4
 test_percentage = 0.3
-samples = 700
-desv_pad = 1.5
-random_seed = 32121
+samples = 500
+desv_pad = 1
+random_seed = 3212
 
-def plot_data(input, output, title, path_to_save):
-    plt.clf()        
-    groups = plt.scatter(input[:,0], input[:,1], marker='o', c=output,edgecolor='k')
-    plt.title(title, fontsize=20, fontweight ="bold")
-    plt.grid(True)
-    plt.legend(*groups.legend_elements(),
-                    loc="lower left", title="Grupos")
-    plt.savefig(path_to_save)
+# Geração dos dados de amostra
+x, y = make_blobs(n_samples=samples, centers=n_centers, cluster_std=desv_pad, random_state=random_seed)
 
+# Separação dos dados em conjuntos de treinamento e teste
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_percentage, stratify=y)
 
-x, y = C_Means.generate_data(n_samples=samples, centers=n_centers, cluster_std=desv_pad, random_seed=random_seed)
-x_train, x_test, y_train, y_test = train_test_split(x,y,test_size = test_percentage, stratify=y)
+# Plot das amostras
+Graphs.display_samples(x, y, "Conjunto das amostras", "Results/samples.png")
+Graphs.display_samples(x_train, y_train, "Conjunto de treinamento", "Results/train.png")
+Graphs.display_samples(x_test, y_test, "Conjunto de validação", "Results/test.png")
 
-#plot das amostras
-plot_data(x, y, "Conjunto das amostras", "results/amostras.png")
-plot_data(x_train, y_train, "Conjunto de treinamento", "results/train.png")
-plot_data(x_test, y_test, "Conjunto de validação", "results/test.png")
+def runs(model):
+    # Treinamento do modelo
+    model.fit(x=x_train, y=y_train, n_centers=n_centers)
+    model.info()
 
+    # Plot dos clusters em cada época
+    for epoch in range(len(model.historic['centers']) - 1):
+        Graphs.display_samples_with_centers(
+            input=x_train,
+            centers=model.historic['centers'][epoch],
+            membership_matrix=model.historic['membership_matrix'][epoch],
+            title=f"Época {epoch}",
+            show=False,
+            save_path="Results/" + ("supervised" if model.supervised else "unsupervised") + "/train"
+        )
 
-def unsupervised():
-    model = C_Means(supervised=False)
-    model.fit(x_train, n_centers= n_centers)
-    model.info(path="results/unsupervised_train/", x=x_train, show=False)
+    # Predição do conjunto de teste e plot dos resultados
     Y, erro, accuracy = model.predict_group(x_test, y_test)
-    plot_data(x_test, Y, "Validação não supervisionado", "results/unsupervised_test/result.png")
-    print("\nResultados obtidos: ")
-    print("\tNúmero de erros: ", erro)
-    print(f"\tPorcentagem de acerto: {round(accuracy * 100, 2)} %")
-    
-def supervised():
-    model = C_Means(supervised=True)
-    model.fit(x=x_train,y=y_train)
-    model.info(path="results/supervised_train/"  , x=x_train, show=False)
-    Y, erro, accuracy = model.predict_group(x_test, y_test)
-    plot_data(x_test, Y, "Validação supervisionado", "results/supervised_test/result.png")
-    print("\nResultados obtidos: ")
-    print("\tNúmero de erros: ", erro)
-    print(f"\tPorcentagem de acerto: {round(accuracy * 100, 2)} %")
+    Graphs.display_samples_with_centers(
+        input=x_test,
+        membership_matrix=Y,
+        centers=model.centers,
+        title="Resultado conjunto de testes",
+        show=False,
+        save_path="Results/" + ("supervised" if model.supervised else "unsupervised") + "/test"
+    )
 
-unsupervised()
-#supervised()
+    # Exibição dos resultados
+    print("\nResultados obtidos: ")
+    print("\tNúmero de erros:", erro)
+    print(f"\tPorcentagem de acerto: {round(accuracy * 100, 2)}%")
 
+# Criação do modelo não supervisionado
+model_unsupervised = C_Means(supervised=False)
+
+# Criação do modelo supervisionado
+model_supervised = C_Means(supervised=True, centers=[])
+
+# Execução do modelo não supervisionado
+runs(model_unsupervised)
+
+# Execução do modelo supervisionado
+runs(model_supervised)

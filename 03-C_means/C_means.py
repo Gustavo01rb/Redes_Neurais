@@ -1,7 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import make_blobs
-from math import sqrt
 
 class C_Means:
     def __init__(
@@ -37,29 +35,6 @@ class C_Means:
             "membership_matrix": []
         }
 
-    @staticmethod
-    def generate_data(n_samples=500, centers=3, cluster_std=0.50, random_seed=None):
-        """
-        Gera um conjunto de dados sintético usando make_blobs do scikit-learn.
-
-        Parâmetros:
-            - n_samples: int, opcional (padrão=500)
-                Número de amostras a serem geradas.
-            - centers: int ou array-like, opcional (padrão=3)
-                Número de centros a serem gerados ou as coordenadas dos centros.
-            - cluster_std: float ou array-like, opcional (padrão=0.50)
-                Desvio padrão dos clusters.
-            - random_seed: int, opcional (padrão=None)
-                Semente aleatória para a geração dos dados.
-
-        Retorna:
-            X: array, shape (n_samples, n_features)
-                Matriz de características.
-            y: array, shape (n_samples,)
-                Rótulos das amostras geradas.
-        """
-        return make_blobs(n_samples=n_samples, centers=centers, cluster_std=cluster_std, random_state=random_seed)
-
     def __euclidean_distance(self, *args):
         """
         Calcula a distância euclidiana entre vários pontos em um espaço euclidiano.
@@ -77,7 +52,7 @@ class C_Means:
             for point in range(len(args) - 1):
                 d = args[point][cord] - args[point + 1][cord]
                 sum += d ** 2
-        return sqrt(sum)
+        return sum ** (1/2)
 
     def predict(self, point: list, centers=[]):
         """
@@ -165,11 +140,11 @@ class C_Means:
             Nenhum.
         """
         for center in np.unique(y):
-            group = y == center
-            self.centers.append(np.array([
-                x[group, 0].mean(),
-                x[group, 1].mean(),
-            ]))
+            x_cord = x[y==center][:,0].mean()
+            y_cord = x[y==center][:,1].mean()
+            new_center = np.array([x_cord, y_cord])
+            self.centers.append(new_center)
+
         self.centers = np.array(self.centers)
 
     def __accuracy(self, x, y, centers):
@@ -292,51 +267,64 @@ class C_Means:
                 return
             self.historic['centers'].append(self.centers.copy())
     
-    def info(self, path : str , x : np.array, show : bool = False) -> None:
+    def info(self) -> None:
+        """
+        Exibe informações sobre o modelo, como o número de épocas até a convergência e a posição final dos centros.
+        Também chama a função show() para exibir visualizações dos dados.
+
+        Parâmetros:
+        - path (str): Caminho para salvar as visualizações.
+        - x (np.array): Array de entrada com as amostras.
+        - show (bool, opcional): Indica se as visualizações devem ser exibidas na tela. O padrão é False.
+        """
         print("\n\n Informações do modelo: ")
         print("\t Número de épocas até a convergência: ", self.epoch)
         print("\tPosição final dos centros: ")
         for i, center in enumerate(self.centers):
             print(f"\t\tCentro {i+1} : {center}")
-        self.show(path, x,show)
+        
 
-    def show(self, path : str ,x : np.array, show : bool ) -> None:
-        plt.clf()        
-        y = self.membership_matrix
-        plt.title("Amostras", fontsize=20, fontweight ="bold")
-        plt.scatter(x[:,0], x[:,1], marker='o',edgecolor='k')
-        plt.grid(True)
-        plt.savefig(path + "1_sample.png")
-        if show : plt.show()
 
-        for epoch in range(len(self.historic['centers']) -1):
-            plt.clf()        
+    def show(self, path: str, x: np.array, show: bool) -> None:
+        """
+        Gera e salva visualizações dos dados e dos centros em diferentes épocas.
+
+        Parâmetros:
+        - path (str): Caminho para salvar as visualizações.
+        - x (np.array): Array de entrada com as amostras.
+        - show (bool): Indica se as visualizações devem ser exibidas na tela.
+        """ 
+
+        for epoch in range(len(self.historic['centers']) - 1):
+            plt.clf()
             _, ax = plt.subplots()
-            groups  =  ax.scatter(x[:,0], x[:,1], marker='o', c=self.historic['membership_matrix'][epoch],edgecolor='k')
-            ax.scatter(self.historic['centers'][epoch][:,0], self.historic['centers'][epoch][:,1], marker='^',c = 'r', label = "Centros",s=100,edgecolor='k')
-            plt.title(f"Época: {epoch}", fontsize=20, fontweight ="bold")
+            groups = ax.scatter(x[:, 0], x[:, 1], marker='o', c=self.historic['membership_matrix'][epoch], edgecolor='k')
+            ax.scatter(self.historic['centers'][epoch][:, 0], self.historic['centers'][epoch][:, 1], marker='^',
+                    c='r', label="Centros", s=100, edgecolor='k')
+            plt.title(f"Época: {epoch}", fontsize=20, fontweight="bold")
             ax.grid(True)
             legend2 = ax.legend(loc="upper right")
             ax.add_artist(legend2)
-            legend1 = ax.legend(*groups.legend_elements(),
-                    loc="lower left", title="Grupos")
+            legend1 = ax.legend(*groups.legend_elements(), loc="lower left", title="Grupos")
             ax.add_artist(legend1)
-            
 
-            plt.savefig(path +"epoch"+ str(epoch) +".png")
-            if show : plt.show()    
+            plt.savefig(path + "epoch" + str(epoch) + ".png")
+            if show:
+                plt.show()
 
-
-        plt.clf()    
+        plt.clf()
+        y = self.membership_matrix
         _, ax = plt.subplots()
-        groups =  ax.scatter(x[:,0], x[:,1], marker='o', c=y,edgecolor='k')
-        ax.scatter(self.centers[:,0], self.centers[:,1],label= "Centros",marker='^',c = 'r',s=100, edgecolor='k')
-        plt.title("Resultado não supervisionado" if not self.supervised else "Resultado supervisionado", fontsize=20, fontweight ="bold")
+        groups = ax.scatter(x[:, 0], x[:, 1], marker='o', c=y, edgecolor='k')
+        ax.scatter(self.centers[:, 0], self.centers[:, 1], label="Centros", marker='^', c='r', s=100, edgecolor='k')
+        plt.title("Resultado não supervisionado" if not self.supervised else "Resultado supervisionado",
+                fontsize=20, fontweight="bold")
         ax.grid(True)
         legend2 = ax.legend(loc="upper right")
         ax.add_artist(legend2)
-        legend1 = ax.legend(*groups.legend_elements(),
-                    loc="lower left", title="Grupos")
+        legend1 = ax.legend(*groups.legend_elements(), loc="lower left", title="Grupos")
         ax.add_artist(legend1)
-        plt.savefig(path +"2_result.png")
-        if show : plt.show()
+        plt.savefig(path + "2_result.png")
+        if show:
+            plt.show()
+
